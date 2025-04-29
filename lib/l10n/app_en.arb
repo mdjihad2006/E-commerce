@@ -1,0 +1,26 @@
+{
+  "@@locale": "en",
+  "version": "Version",
+  "welcomeBack": "Welcome Back",
+  "enterYourEmailAndPassword": "Enter your email and password",
+  "email": "Email",
+  "password": "Password",
+  "signIn": "Sign In",
+  "signup": "Sign Up",
+"registeraccount": "Register your acoount",
+  "getstartwithyourdetails": "Get start with your details",
+  "firstname": "First Name",
+  "lastname": "Last Name",
+  "phone": "Phone",
+  "deliveryaddress": "Delivery Address",
+  "enteryourotpcode": "Enetr Your OTP code",
+  "afourDegitCodesent": "A 4 digit code has been sent to your email address",
+  "seeall": "See all",
+  "categories": "Categories",
+  "popular": "Popular",
+  "snew": "New",
+  "special": "Special",
+  "wishlist": "Wishlist",
+  "productDetails": "Product Details"
+
+}

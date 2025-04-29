@@ -1,0 +1,1 @@
+start chrome --user-data-dir="%TEMP%\temp_chrome_user_data" --disable-web-security --disable-site-isolation-trials --disable-features=IsolateOrigins,site-per-process --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222

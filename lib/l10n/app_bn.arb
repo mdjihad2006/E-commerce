@@ -1,0 +1,25 @@
+{
+  "@@locale": "bn",
+  "version": "সংস্করণ",
+  "welcomeBack": "স্বাগতম",
+  "enterYourEmailAndPassword": "আপনার ইমেইল পাসওয়ার্ড লিখুন",
+  "email": "ইমেইল",
+  "password": "পাসওয়ার্ড",
+  "signIn": "সাইন ইন করুন",
+  "signup": "সাইন আপ",
+  "registeraccount": "নিবন্ধন করুন",
+  "getstartwithyourdetails": "আপনার তথ্য দিন",
+  "firstname": "নামের প্রথম অংশ",
+  "lastname": "পদবী",
+  "phone": "মোবাইল",
+  "deliveryaddress": "আপনার ঠিকানা",
+  "seeall": "সব দেখুন",
+  "categories": "ক্যাটাগরি",
+  "popular": "জনপ্রিয়",
+  "snew": "নতুন",
+  "special": "বিশেষ",
+  "wishlist":"ইচ্ছা তালিকা",
+  "productDetails": "পণ্যের বিবরণ"
+
+
+}
