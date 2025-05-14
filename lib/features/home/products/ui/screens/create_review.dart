@@ -1,5 +1,4 @@
 import 'package:bazario/app/app_colors.dart';
-import 'package:bazario/features/common/ui/screens/main_bottom_navbar_screen.dart';
 import 'package:flutter/material.dart';
 
 class CreateReview extends StatefulWidget {
@@ -31,12 +30,20 @@ class _CreateReviewState extends State<CreateReview> {
         child: Column(
           children: [
             SizedBox(height: 16),
-            TextField(),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'First name'
+              ),
+            ),
             SizedBox(height: 10),
-            TextField(),
+            TextField(decoration: InputDecoration(
+              hintText: 'Last name'
+            ),),
             SizedBox(height: 10),
 
-            TextField(maxLines: 8),
+            TextField(
+              decoration: InputDecoration(hintText: 'write review'),
+                maxLines: 8),
             SizedBox(height: 10),
 
             ElevatedButton(onPressed: () {}, child: Text("Review")),

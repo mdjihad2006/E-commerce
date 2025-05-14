@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bazario/features/auth/controller/auth_controller.dart';
+import 'package:get/get.dart' as getx;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
@@ -20,15 +22,15 @@ class NetworkResponse {
 class NetworkCaller {
   final Logger _logger = Logger();
 
-  Future<NetworkResponse> getRequest({required String url,Map<String,dynamic>? queryParams}) async {
-
+  Future<NetworkResponse> getRequest(
+      {required String url, Map<String, dynamic>? queryParams}) async {
     try {
-      url +='?';
-      for (String key in queryParams?.keys ?? {} ){
-        url+='$key=${queryParams![key]}&';
+      url += '?';
+      for (String key in queryParams?.keys ?? {}) {
+        url += '$key=${queryParams![key]}&';
       }
       Uri uri = Uri.parse(url);
-      Map<String, String> headers = {'token': ''};
+      Map<String, String> headers = {'token': getx.Get.find<AuthController>().token ?? ''};
 
       _logRequest(url, headers);
       Response response = await get(uri, headers: headers);
@@ -70,7 +72,7 @@ class NetworkCaller {
       Uri uri = Uri.parse(url);
       Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': ''
+        'token': getx.Get.find<AuthController>().token ?? ''
       };
 
       _logRequest(url, headers);
@@ -86,6 +88,7 @@ class NetworkCaller {
             statusCode: response.statusCode,
             responseData: decodedResponse);
       } else if (response.statusCode == 401) {
+        await _clearUserData();
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
@@ -113,7 +116,7 @@ class NetworkCaller {
       Uri uri = Uri.parse(url);
       Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': ''
+        'token': getx.Get.find<AuthController>().token ?? ''
       };
 
       _logRequest(url, headers);
@@ -128,6 +131,7 @@ class NetworkCaller {
             statusCode: response.statusCode,
             responseData: decodedResponse);
       } else if (response.statusCode == 401) {
+        await _clearUserData();
         return NetworkResponse(
             isSuccess: false, statusCode: response.statusCode);
       } else {
@@ -149,7 +153,7 @@ class NetworkCaller {
       Uri uri = Uri.parse(url);
       Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': ''
+        'token': getx.Get.find<AuthController>().token ?? ''
       };
 
       _logRequest(url, headers);
@@ -164,6 +168,7 @@ class NetworkCaller {
             statusCode: response.statusCode,
             responseData: decodedResponse);
       } else if (response.statusCode == 401) {
+        await _clearUserData();
         return NetworkResponse(
             isSuccess: false, statusCode: response.statusCode);
       } else {
@@ -185,7 +190,7 @@ class NetworkCaller {
       Uri uri = Uri.parse(url);
       Map<String, String> headers = {
         'content-type': 'application/json',
-        'token': ''
+        'token': getx.Get.find<AuthController>().token ?? ''
       };
 
       _logRequest(url, headers);
@@ -200,6 +205,7 @@ class NetworkCaller {
             statusCode: response.statusCode,
             responseData: decodedResponse);
       } else if (response.statusCode == 401) {
+        await _clearUserData();
         return NetworkResponse(
             isSuccess: false, statusCode: response.statusCode);
       } else {
@@ -223,5 +229,9 @@ class NetworkCaller {
   void _logResponse(String url, Response response) {
     _logger.i(
         "URL => $url\nStatus Code: ${response.statusCode}\nHeaders: ${response.headers}\nBody: ${response.body}");
+  }
+
+  Future<void> _clearUserData() async {
+    await getx.Get.find<AuthController>().clearUserData();
   }
 }

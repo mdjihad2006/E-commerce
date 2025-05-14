@@ -1,7 +1,9 @@
 import 'package:bazario/app/app_colors.dart';
-import 'package:bazario/features/common/ui/screens/main_bottom_navbar_screen.dart';
 import 'package:bazario/features/home/products/ui/screens/create_review.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 
 class ReviewsScreen extends StatefulWidget {
   const ReviewsScreen({super.key});
@@ -190,7 +192,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   textStyle: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, CreateReview.name);
+                  Get.to(CreateReview(),transition: Transition.native,duration: Duration(seconds: 1));
                 },
                 child: Icon(Icons.add, color: Colors.black),
               ),

@@ -2,48 +2,50 @@ import 'package:bazario/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:bazario/features/auth/ui/screens/sign_up_screen.dart';
 import 'package:bazario/features/auth/ui/screens/splash_screen.dart';
 import 'package:bazario/features/auth/ui/screens/verify_otp_screen.dart';
+import 'package:bazario/features/categories/data/category_model/category_modal.dart';
 import 'package:bazario/features/common/ui/screens/main_bottom_navbar_screen.dart';
 import 'package:bazario/features/home/products/ui/screens/create_review.dart';
 import 'package:bazario/features/home/products/ui/screens/product_details_screen.dart';
 import 'package:bazario/features/home/products/ui/screens/product_list_screen.dart';
 import 'package:bazario/features/home/products/ui/screens/reviews_screen.dart';
-import 'package:bazario/features/home/ui/screen/home_screen.dart';
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 
 class AppRoutes {
-  static Route<dynamic> onGenerateRoute(RouteSettings setting) {
-    late Widget route;
-    if (setting.name == SplashScreen.name) {
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    Widget route; // No 'late' keyword here
+
+    if (settings.name == '/') {
+      route = const SplashScreen(); // Handle the initial route
+    } else if (settings.name == SplashScreen.name) {
       route = const SplashScreen();
-    } else if (setting.name == SignInScreen.name) {
-      route = SignInScreen();
-    } else if (setting.name == SignUpScreen.name) {
+    } else if (settings.name == SignInScreen.name) {
+      route = const SignInScreen();
+    } else if (settings.name == SignUpScreen.name) {
       route = const SignUpScreen();
-    } else if (setting.name == VerifyOtpScreen.name) {
-      final String email = setting.arguments as String;
+    } else if (settings.name == VerifyOtpScreen.name) {
+      String email = settings.arguments as String;
       route = VerifyOtpScreen(email: email);
+    } else if (settings.name == MainBottomNavBarScreen.name) {
+      route = const MainBottomNavBarScreen();
+    } else if (settings.name == ReviewsScreen.name) {
+      route = const ReviewsScreen();
+    } else if (settings.name == CreateReview.name) {
+      route = const CreateReview();
+    } else if (settings.name == ProductListScreen.name) {
+      final category = settings.arguments as CategoryModel;
+      route = ProductListScreen(category: category);
+    } else if (settings.name == ProductDetailsScreen.name) {
+      String productId = settings.arguments as String;
+      route = ProductDetailsScreen(productId: productId);
+    } else {
+      // Default fallback for any unmatched route
+      route =  Scaffold(
+        body: Center(child: Text('Route not found')),
+      );
     }
-    else if (setting.name == MainBottomNavbarScreen.name) {
-      route = const MainBottomNavbarScreen();
-    } else if (setting.name == HomeScreen.name) {
-      route = HomeScreen();
-    }
-    else if (setting.name == ProductListScreen.name) {
-      final String category = setting.arguments as String;
-      route = ProductListScreen(category);
-    }else if (setting.name == ProductDetailsScreen.name) {
-      route = ProductDetailsScreen();
-    }
-    else if (setting.name == ReviewsScreen.name) {
-      route = ReviewsScreen();
-    }
-    else if (setting.name == CreateReview.name) {
-      route = CreateReview();
-    }
+
     return MaterialPageRoute(
-      builder: (context) {
-        return route;
-      },
+      builder: (context) => route,
     );
   }
 }

@@ -1,7 +1,7 @@
 
 import 'package:bazario/core/network_caller/network_caller.dart';
 import 'package:bazario/data/urls/urls.dart';
-import 'package:bazario/features/auth/data/modals/category_modal.dart';
+import 'package:bazario/features/categories/data/category_model/category_modal.dart';
 import 'package:get/get.dart';
 
 class CategoryController extends GetxController {

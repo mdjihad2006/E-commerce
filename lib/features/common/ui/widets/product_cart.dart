@@ -1,84 +1,86 @@
 import 'package:bazario/app/app_colors.dart';
+import 'package:bazario/features/common/data/models/product_model.dart';
 import 'package:bazario/features/home/products/ui/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({
-    super.key,
-     this.title,
-     this.price,
-     this.imageUrl,
-  });
+  const ProductCard({super.key, required this.productModel});
 
-  final String? title;
-  final int? price;
-  final String? imageUrl;
+  final ProductModel productModel;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, ProductDetailsScreen.name);
+        Navigator.pushNamed(
+          context,
+          ProductDetailsScreen.name,
+          arguments: productModel.id,
+        );
       },
       child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: SizedBox(
-          width: 140,
+          width: 150,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 120,
-                width: 140,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    topLeft: Radius.circular(8),
-                  ),
-                  color: AppColors.themeColor.withOpacity(0.15),
-                  image: DecorationImage(
-                    image: NetworkImage(imageUrl!), // ✅ Use dynamic image
+              // Product Image
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Container(
+                  height: 120,
+                  width: double.infinity,
+                  color: AppColors.themeColor.withOpacity(0.1),
+                  child: productModel.photos.isNotEmpty
+                      ? Image.network(
+                    productModel.photos.first,
                     fit: BoxFit.cover,
-                  ),
+                  )
+                      : const Center(child: Icon(Icons.image_not_supported, size: 40)),
                 ),
               ),
+
+              // Product Info
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Title
                     Text(
-                      title!,
+                      productModel.title,
                       maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        overflow: TextOverflow.ellipsis,
                         fontWeight: FontWeight.w600,
+                        fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
+
+                    // Price & Rating
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '৳ $price', // ✅ Use dynamic price
+                          '৳${productModel.currentPrice}',
                           style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
                             color: AppColors.themeColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
-                        const Wrap(
+                        Row(
                           children: [
-                            Icon(Icons.star, size: 18, color: Colors.orange),
-                            Text("3.3"),
+                            const Icon(Icons.star, size: 16, color: Colors.orange),
+                            const SizedBox(width: 2),
+                            Text(
+                              "${productModel.rating}",
+                              style: const TextStyle(fontSize: 13),
+                            ),
                           ],
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          color: AppColors.themeColor,
-                          child: const Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: Icon(Icons.favorite_border, size: 14, color: Colors.white),
-                          ),
                         ),
                       ],
                     ),

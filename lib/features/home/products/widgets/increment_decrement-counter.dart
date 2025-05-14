@@ -1,81 +1,59 @@
-import 'package:flutter/material.dart';
 import 'package:bazario/app/app_colors.dart';
+import 'package:flutter/material.dart';
 
-class IncrementDecrementCounter extends StatefulWidget {
-  const IncrementDecrementCounter({super.key, required this.onchange});
-  final Function(int) onchange;
+class IncrementDecrementCounterWidget extends StatefulWidget {
+  const IncrementDecrementCounterWidget({super.key, required this.onChange});
+
+  final Function(int) onChange;
 
   @override
-  State<IncrementDecrementCounter> createState() => _IncrementDecrementCounterState();
+  State<IncrementDecrementCounterWidget> createState() => _IncrementDecrementCounterWidgetState();
 }
 
-class _IncrementDecrementCounterState extends State<IncrementDecrementCounter> {
-  int count = 0;
+class _IncrementDecrementCounterWidgetState extends State<IncrementDecrementCounterWidget> {
+  int count = 1;
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 12,
       alignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 12,
       children: [
         GestureDetector(
           onTap: () {
-            count == 20
-                ? setState(() {
-              count--;
-              widget.onchange(count);
-            })
-                : count <= 1
-                ? showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: BorderSide(
-                    color: Colors.amber
-                  )
-                ),
-
-                backgroundColor: AppColors.themeColor,
-                title: const Text("Counter limit reached"),
-                content: const Text("You've reached the minimum limit of 1"),
-              ),
-            )
-                : setState(() {
-              count--;
-              widget.onchange(count);
-            });
+            if (count <= 1) return;
+            count--;
+            widget.onChange(count);
+            setState(() {});
           },
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: AppColors.themeColor,
-              borderRadius: BorderRadius.circular(4),
+                color: AppColors.themeColor,
+                borderRadius: BorderRadius.circular(4)
             ),
-            child: const Icon(Icons.remove),
+            child: const Icon(Icons.remove, color: Colors.white,),
           ),
         ),
-        Text(
-          "$count",
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        Text('$count', style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+        ),),
         GestureDetector(
           onTap: () {
-            count < 20
-                ? setState(() {
-              count++;
-              widget.onchange(count);
-            })
-                : null;
+            if (count >= 20) return;
+            count++;
+            widget.onChange(count);
+            setState(() {});
           },
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: AppColors.themeColor,
-              borderRadius: BorderRadius.circular(4),
+                color: AppColors.themeColor,
+                borderRadius: BorderRadius.circular(4)
             ),
-            child: const Icon(Icons.add),
+            child: const Icon(Icons.add, color: Colors.white,),
           ),
         ),
       ],

@@ -55,8 +55,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailTEController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration:
-                  InputDecoration(hintText: context.localization.email),
+                  InputDecoration(
+                      hintText: context.localization.email),
+
                 ),
                 const SizedBox(height: 8),
                 TextFormField(
@@ -104,7 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final bool isSuccess = await _signInController.signIn(signInModel);
     if (isSuccess) {
       Navigator.pushNamedAndRemoveUntil(
-          context, MainBottomNavbarScreen.name, (predicate) => false);
+          context, MainBottomNavBarScreen.name, (predicate) => false);
     } else {
       showSnackBarMessage(context, _signInController.errorMessage!, true);
     }

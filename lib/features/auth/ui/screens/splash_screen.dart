@@ -1,8 +1,12 @@
 import 'package:bazario/app/app_config.dart';
 import 'package:bazario/core/extensions/localizetions_extensions.dart';
+import 'package:bazario/features/auth/controller/auth_controller.dart';
 import 'package:bazario/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:bazario/features/auth/ui/widgets/app_logo.dart';
+import 'package:bazario/features/common/ui/screens/main_bottom_navbar_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,7 +28,12 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
 
     if (mounted) {
-      Navigator.pushReplacementNamed(context, SignInScreen.name);
+      if(Get.find<AuthController>().isValidUser()){
+        Get.to(MainBottomNavBarScreen(),transition: Transition.leftToRight,duration: Duration(seconds: 1));
+      }
+      else{
+        Navigator.pushReplacementNamed(context, SignInScreen.name);
+      }
     }
   }
 

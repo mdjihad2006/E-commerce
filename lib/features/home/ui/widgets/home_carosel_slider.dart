@@ -27,7 +27,7 @@ class _HomeCaroselSliderState extends State<HomeCaroselSlider> {
             child: CenterCircularProgressIndicator(),
           ),
           child: Visibility(
-            visible: sliderController.sliders.isEmpty,
+            //visible: sliderController.sliders.isEmpty,
             child: Column(
               children: [
                 CarouselSlider(

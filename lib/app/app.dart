@@ -1,5 +1,5 @@
 import 'package:bazario/app/app_colors.dart';
-import 'package:bazario/app/app_routs.dart';
+import 'package:bazario/app/app_routs.dart' show AppRoutes;
 import 'package:bazario/app/controller_binder.dart';
 import 'package:bazario/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';

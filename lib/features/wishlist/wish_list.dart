@@ -1,57 +1,80 @@
-import 'package:bazario/core/extensions/localizetions_extensions.dart';
-import 'package:bazario/features/common/ui/widets/product_cart.dart';
-import 'package:bazario/features/wishlist/data/wish_list_controller.dart';
+import 'package:bazario/features/wishlist/controller/get_wish_list_controller.dart';
+import 'package:bazario/features/wishlist/data/model/wish_list_model.dart';
+import 'package:bazario/features/wishlist/widgets/wishListItem.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:bazario/core/widgets/center_circular_progress_indicator.dart';
 
-class WishList extends StatelessWidget {
-  const WishList({super.key});
+import 'package:bazario/features/common/controllers/mainbottom_navbar_controller.dart';
 
-  static const String name = "/wish-list";
+class WishListScreen extends StatefulWidget {
+  const WishListScreen({super.key});
+
+  @override
+  State<WishListScreen> createState() => _WishListScreenState();
+}
+
+class _WishListScreenState extends State<WishListScreen> {
+  late final GetWishListController _getWishListController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Ensure controller is available
+    _getWishListController = Get.put(GetWishListController());
+
+    // Fetch cart data
+    _getWishListController.getWishList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(context.localization.wishlist)),
-      body: GetBuilder<WishListController>(
-        init: WishListController()..fetchWishlist(),
-        builder: (controller) {
-          if (controller.inProgress) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (_, __) {
+        Get.find<MainBottomNavBarController>().backToHome();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Get.find<MainBottomNavBarController>().backToHome();
+            },
+          ),
+          title: const Text('WishList'),
+        ),
+        body: GetBuilder<GetWishListController>(
+          builder: (controller) {
+            if (controller.getWishListListInProgress) {
+              return const CenterCircularProgressIndicator();
+            }
 
-          if (controller.errorMessage != null) {
-            return Center(child: Text(controller.errorMessage!));
-          }
-
-          if (controller.wishlist.isEmpty) {
-            return Center(child: Text('No item here'));
-          }
-
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GridView.builder(
-              itemCount: controller.wishlist.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 0,
-                mainAxisSpacing: 8,
-                childAspectRatio: 0.65,
-              ),
-              itemBuilder: (context, index) {
-                final item = controller?.wishlist[index];
-                return FittedBox(
-                  child: ProductCard(
-                    title: item?.title,
-                    price: item?.price.toInt(),
-                    imageUrl: item?.image,
+            return Column(
+              children: [
+                // Cart Items List
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                      itemCount: controller.WishLIstItemList.length,
+                      itemBuilder: (context, index) {
+                        WishListModel wishListItem = controller.WishLIstItemList[index];
+                        return WishListItem(wishListModel: wishListItem);
+                      },
+                    ),
                   ),
-                );
-              },
-            ),
-          );
-        },
+                ),
+
+                // Total Price Section
+
+              ],
+            );
+          },
+        ),
       ),
     );
   }
+
+
 }

@@ -1,10 +1,15 @@
 
-import 'package:bazario/features/auth/ui/controllers/category_controller.dart';
+import 'package:bazario/core/widgets/center_circular_progress_indicator.dart';
+import 'package:bazario/features/categories/controller/category_controller.dart';
+import 'package:bazario/features/common/controllers/mainbottom_navbar_controller.dart';
+import 'package:bazario/features/common/ui/widets/category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CategoryListScreen extends StatefulWidget {
   const CategoryListScreen({super.key});
+
+  static const String name = '/category-screen';
 
   @override
   State<CategoryListScreen> createState() => _CategoryListScreenState();
@@ -46,7 +51,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
         ),
         body: GetBuilder<CategoryController>(builder: (controller) {
           if (controller.isInitialLoading) {
-            return const CenteredCircularProgressIndicator();
+            return const CenterCircularProgressIndicator();
           }
 
           return Padding(
