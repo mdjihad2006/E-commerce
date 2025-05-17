@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:bazario/data/modals/user_modal.dart';
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart'; // ✅ fixed capitalization
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,9 +32,11 @@ class AuthController extends GetxController {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     token = sharedPreferences.getString(_tokenKey);
     String? userData = sharedPreferences.getString(_userDataKey);
+
     if (userData != null) {
       user = UserModel.fromJson(jsonDecode(userData));
     }
+
     print('Loaded token: $token'); // Debug log
     update();
   }
@@ -42,11 +44,9 @@ class AuthController extends GetxController {
   Future<bool> isUserLoggedIn() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? accessToken = sharedPreferences.getString(_tokenKey);
-    if (accessToken != null) {
-      await getUserData();
-      return true;
-    }
-    return false;
+    await getUserData();
+
+    return accessToken != null && accessToken.isNotEmpty;
   }
 
   Future<void> clearUserData() async {
@@ -57,6 +57,7 @@ class AuthController extends GetxController {
     user = null;
     print('Cleared token'); // Debug log
     update();
+
     // Delay navigation to ensure UI is ready
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {

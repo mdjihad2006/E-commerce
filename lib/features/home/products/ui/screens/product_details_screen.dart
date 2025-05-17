@@ -14,7 +14,7 @@ import 'package:bazario/features/home/products/widgets/color_picker.dart';
 import 'package:bazario/features/home/products/widgets/increment_decrement-counter.dart';
 import 'package:bazario/features/home/products/widgets/product_carousel_slider.dart';
 import 'package:bazario/features/home/products/widgets/size_picker.dart';
-import 'package:bazario/features/wishlist/controller/add_to_wish_lsit.dart';
+import 'package:bazario/features/wishlist/controller/add_to_wish_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,10 +1,10 @@
+import 'package:bazario/features/cart/ui/screens/controller/cart_list_controller.dart';
+import 'package:bazario/features/cart/widget/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bazario/app/app_colors.dart';
 import 'package:bazario/core/widgets/center_circular_progress_indicator.dart';
-import 'package:bazario/features/cart/controller/cart_controller.dart';
 import 'package:bazario/features/cart/data/model/cart_model.dart';
-import 'package:bazario/features/cart/ui/widgets/cart_item.dart';
 import 'package:bazario/features/common/controllers/mainbottom_navbar_controller.dart';
 
 class CartListScreen extends StatefulWidget {

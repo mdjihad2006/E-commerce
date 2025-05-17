@@ -4,12 +4,10 @@ import 'package:bazario/core/widgets/center_circular_progress_indicator.dart';
 import 'package:bazario/features/auth/controller/auth_controller.dart';
 import 'package:bazario/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:bazario/features/categories/controller/category_controller.dart';
+import 'package:bazario/features/categories/controller/get_category_by_slug.dart';
 import 'package:bazario/features/categories/data/category_model/category_modal.dart';
-import 'package:bazario/features/categories/ui/screens/category_by_slug_controller.dart';
 import 'package:bazario/features/common/controllers/mainbottom_navbar_controller.dart';
-import 'package:bazario/features/common/data/models/product_model.dart';
 import 'package:bazario/features/common/ui/widets/category_item.dart';
-import 'package:bazario/features/common/ui/widets/product_cart.dart';
 import 'package:bazario/features/home/ui/widgets/app_bar_action_button.dart';
 import 'package:bazario/features/home/ui/widgets/home_carosel_slider.dart';
 import 'package:bazario/features/home/ui/widgets/section_header.dart';
@@ -54,21 +52,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {},
               ),
               const SizedBox(height: 16),
-              _buildPopularCategoriesSection(),
+              _buildPopularCategoriesSection('_id'),
               const SizedBox(height: 16),
               CategoryTItle(
                 title: context.localization.special,
                 onTap: () {},
               ),
               const SizedBox(height: 16),
-             _buildPopularCategoriesSection(),
+             _buildPopularCategoriesSection('_id'),
               const SizedBox(height: 16),
               CategoryTItle(
                 title: context.localization.snew,
                 onTap: () {},
               ),
               const SizedBox(height: 16),
-        _buildPopularCategoriesSection(),
+        _buildPopularCategoriesSection('_id'),
             ],
           ),
         ),
@@ -104,8 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-  Widget _buildPopularCategoriesSection() {
-    return GetBuilder<CategoryBySlugController>(
+  Widget _buildPopularCategoriesSection(String id) {
+    return GetBuilder<CategoryByIdController>(
      // init: CategoryBySlugController(),
       builder: (controller) {
         if (controller.isInitialLoading) {
@@ -122,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //   );
         // }
 
-        List<CategoryModel> popularList = controller.categoryListBySlug;
+        List<CategoryModel> popularList = controller.categoryList;
         List<CategoryModel> list = popularList.length > 10
             ? popularList.sublist(0, 10)
             : popularList;

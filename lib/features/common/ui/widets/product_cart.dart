@@ -1,5 +1,5 @@
 import 'package:bazario/app/app_colors.dart';
-import 'package:bazario/features/common/data/models/product_model.dart';
+import 'package:bazario/features/common/data/product_model.dart';
 import 'package:bazario/features/home/products/ui/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 

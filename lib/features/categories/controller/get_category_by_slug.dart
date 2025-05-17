@@ -1,10 +1,10 @@
 
 import 'package:bazario/core/network_caller/network_caller.dart';
 import 'package:bazario/data/urls/urls.dart';
-import 'package:bazario/features/common/data/product_model.dart';
+import 'package:bazario/features/categories/data/category_model/category_modal.dart';
 import 'package:get/get.dart';
 
-class ProductListController extends GetxController {
+class CategoryByIdController extends GetxController {
   final int _perPageDataCount = 30;
 
   int _currentPage = 0;
@@ -15,7 +15,7 @@ class ProductListController extends GetxController {
 
   bool _isLoading = false;
 
-  List<ProductModel> _productList = [];
+  List<CategoryModel> _categoryList = [];
 
   String? _errorMessage;
 
@@ -23,13 +23,13 @@ class ProductListController extends GetxController {
 
   int? get totalPage => _totalPage;
 
-  List<ProductModel> get productList => _productList;
+  List<CategoryModel> get categoryList => _categoryList;
 
   bool get isLoading => _isLoading;
 
   bool get isInitialLoading => _isInitialLoading;
 
-  Future<bool> getProductListByCategory(String categoryId) async {
+  Future<bool> getCategoryList(String id) async {
     if (_totalPage != null && _currentPage > _totalPage!) {
       return true;
     }
@@ -41,18 +41,17 @@ class ProductListController extends GetxController {
     }
     update();
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(url: Urls.getProductUrl, queryParams: {
+        .getRequest(url: Urls.getProductByIdUrl(id), queryParams: {
       'count': _perPageDataCount,
       'page': _currentPage,
-      'category':categoryId
     });
     if (response.isSuccess) {
-      List<ProductModel> list = [];
+      List<CategoryModel> list = [];
       for (Map<String, dynamic> data in response.responseData!['data']
       ['results']) {
-        list.add(ProductModel.fromJson(data));
+        list.add(CategoryModel.fromJson(data));
       }
-      _productList.addAll(list);
+      _categoryList.addAll(list);
       _totalPage = response.responseData!['data']['last_page'];
 
       _errorMessage = null;
@@ -72,10 +71,10 @@ class ProductListController extends GetxController {
     return isSuccess;
   }
 
-  Future<bool> refreshList(String categoryId) {
+  Future<bool> refreshList(String id) {
     _currentPage = 0;
-    _productList = [];
+    _categoryList = [];
     _isInitialLoading = true;
-    return getProductListByCategory(categoryId);
+    return getCategoryList(id);
   }
 }

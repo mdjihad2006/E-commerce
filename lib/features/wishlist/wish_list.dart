@@ -1,6 +1,7 @@
 import 'package:bazario/features/wishlist/controller/get_wish_list_controller.dart';
 import 'package:bazario/features/wishlist/data/model/wish_list_model.dart';
-import 'package:bazario/features/wishlist/widgets/wishListItem.dart';
+import 'package:bazario/features/wishlist/widgets/wish_list_item.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bazario/core/widgets/center_circular_progress_indicator.dart';
@@ -46,7 +47,7 @@ class _WishListScreenState extends State<WishListScreen> {
         ),
         body: GetBuilder<GetWishListController>(
           builder: (controller) {
-            if (controller.getWishListListInProgress) {
+            if (controller.getWishListInProgress) {
               return const CenterCircularProgressIndicator();
             }
 
@@ -57,10 +58,10 @@ class _WishListScreenState extends State<WishListScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListView.builder(
-                      itemCount: controller.WishLIstItemList.length,
+                      itemCount: controller.WishListItemList.length,
                       itemBuilder: (context, index) {
-                        WishListModel wishListItem = controller.WishLIstItemList[index];
-                        return WishListItem(wishListModel: wishListItem);
+                        WishListModel wishListItem = controller.WishListItemList[index];
+                        return WishListItem(wishListItem: wishListItem);
                       },
                     ),
                   ),
