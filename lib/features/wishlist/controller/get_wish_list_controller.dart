@@ -37,6 +37,7 @@ class GetWishListController extends GetxController {
       List<WishListModel> list = [];
       for (Map<String, dynamic> json in response.responseData!['data']
           ['results']) {
+            print(json);
         list.add(WishListModel.fromJson(json));
       }
       _wishListItemList = list;

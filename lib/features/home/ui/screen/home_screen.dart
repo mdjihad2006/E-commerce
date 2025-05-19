@@ -1,8 +1,6 @@
 import 'package:bazario/app/assets_path.dart';
 import 'package:bazario/core/extensions/localizetions_extensions.dart';
 import 'package:bazario/core/widgets/center_circular_progress_indicator.dart';
-import 'package:bazario/features/auth/controller/auth_controller.dart';
-import 'package:bazario/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:bazario/features/categories/controller/category_controller.dart';
 import 'package:bazario/features/categories/controller/get_category_by_slug.dart';
 import 'package:bazario/features/categories/data/category_model/category_modal.dart';
@@ -17,7 +15,6 @@ import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   static const String name = '/home-screen';
 
   @override
@@ -25,50 +22,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final CategoryByIdController controller = Get.put(CategoryByIdController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              _buildSearchTextField(),
-              const SizedBox(height: 16),
-              const HomeCaroselSlider(),
-              const SizedBox(height: 16),
-              CategoryTItle(
-                title: context.localization.categories,
-                onTap: () {
-                  Get.find<MainBottomNavBarController>().moveToCategory();
-                },
-              ),
-              const SizedBox(height: 16),
-              _buildCategoriesSection(),
-              const SizedBox(height: 16),
-              CategoryTItle(
-                title: context.localization.popular,
-                onTap: () {},
-              ),
-              const SizedBox(height: 16),
-              _buildPopularCategoriesSection('_id'),
-              const SizedBox(height: 16),
-              CategoryTItle(
-                title: context.localization.special,
-                onTap: () {},
-              ),
-              const SizedBox(height: 16),
-             _buildPopularCategoriesSection('_id'),
-              const SizedBox(height: 16),
-              CategoryTItle(
-                title: context.localization.snew,
-                onTap: () {},
-              ),
-              const SizedBox(height: 16),
-        _buildPopularCategoriesSection('_id'),
-            ],
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _buildSearchTextField(),
+            const SizedBox(height: 16),
+            const HomeCaroselSlider(),
+            const SizedBox(height: 16),
+            CategoryTItle(
+              title: context.localization.categories,
+              onTap: () {
+                Get.find<MainBottomNavBarController>().moveToCategory();
+              },
+            ),
+            const SizedBox(height: 16),
+            _buildCategoriesSection(),
+            const SizedBox(height: 16),
+            CategoryTItle(
+              title: context.localization.popular,
+              onTap: () {},
+            ),
+            const SizedBox(height: 16),
+            _buildPopularCategoriesSection(),
+          ],
         ),
       ),
     );
@@ -100,50 +82,48 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildPopularCategoriesSection() {
+  const String categoryId = '67c29b221edf70fa6198fce5'; // Replace with real category ID
 
-
-  Widget _buildPopularCategoriesSection(String id) {
-    return GetBuilder<CategoryByIdController>(
-     // init: CategoryBySlugController(),
-      builder: (controller) {
-        if (controller.isInitialLoading) {
-          return const SizedBox(
-            height: 100,
-            child: CenterCircularProgressIndicator(),
-          );
-        }
-
-        // if (controller.errorMessage != null) {
-        //   return SizedBox(
-        //     height: 100,
-        //     child: Center(child: Text(controller.errorMessage!)),
-        //   );
-        // }
-
-        List<CategoryModel> popularList = controller.categoryList;
-        List<CategoryModel> list = popularList.length > 10
-            ? popularList.sublist(0, 10)
-            : popularList;
-
-        if (list.isEmpty) {
-          return const SizedBox(
-            height: 100,
-            child: Center(child: Text('No popular products found')),
-          );
-        }
-
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: list.map((e) {
-              return CategoryItem(categoryModel: e);
-            }).toList(),
-          ),
+  return GetBuilder<CategoryByIdController>(
+    init: CategoryByIdController()..getCategoryListById(categoryId),
+    builder: (controller) {
+      if (controller.isInitialLoading) {
+        return const SizedBox(
+          height: 100,
+          child: Center(child: CircularProgressIndicator()),
         );
-      },
-    );
-  }
+      }
 
+      if (controller.errorMessage != null) {
+        return SizedBox(
+          height: 100,
+          child: Center(child: Text(controller.errorMessage!)),
+        );
+      }
+
+      List<CategoryModel> list = controller.categoryList.length > 10
+          ? controller.categoryList.sublist(0, 10)
+          : controller.categoryList;
+
+      if (list.isEmpty) {
+        return const SizedBox(
+          height: 100,
+          child: Center(child: Text('No popular products found')),
+        );
+      }
+
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: list.map((e) {
+            return CategoryItem(categoryModel: e);
+          }).toList(),
+        ),
+      );
+    },
+  );
+}
 
   Widget _buildSearchTextField() {
     return TextField(
@@ -153,15 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
         filled: true,
         hintText: 'Search',
         prefixIcon: const Icon(Icons.search),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
+        border: OutlineInputBorder(borderSide: BorderSide.none),
       ),
     );
   }
@@ -170,15 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       leading: SvgPicture.asset(AssetsPath.logoSvg),
       actions: [
-        AppBarActionButton(
-          icon: Icons.person_outline,
-          onTap: () {},
-        ),
+        AppBarActionButton(icon: Icons.person_outline, onTap: () {}),
         const SizedBox(width: 8),
-        AppBarActionButton(
-          icon: Icons.call,
-          onTap: () {},
-        ),
+        AppBarActionButton(icon: Icons.call, onTap: () {}),
         const SizedBox(width: 8),
         AppBarActionButton(
           icon: Icons.logout,
@@ -199,10 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             );
-            if (confirm == true) {
-              print('Logout confirmed');
-              Get.find<AuthController>().clearUserData();
-             Navigator.pushNamedAndRemoveUntil(context, SignInScreen.name, (predicate)=>false);
+            if (confirm ?? false) {
+              // Perform logout logic
             }
           },
         ),

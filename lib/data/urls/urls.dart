@@ -7,7 +7,8 @@ class Urls{
   static const String sliderUrl ="$_baseUrl/slides";
   static const String getCategoryUrl ="$_baseUrl/categories";
   static const String getProductUrl ="$_baseUrl/products";
-  static  String getProductByIdUrl(String id) =>"$_baseUrl/products/$id";
+ static String getProductByIdUrl(String id) => "$_baseUrl/products/id/$id";
+
   static const String getWishListUrl ="$_baseUrl/wishlist";
   static const String addToWishList ="$_baseUrl/wishlist";
   static String getProductDetialsUrl(String productId) =>"$_baseUrl/products/id/$productId";
