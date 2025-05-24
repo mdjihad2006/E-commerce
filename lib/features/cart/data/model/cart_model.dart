@@ -16,11 +16,12 @@ class CartItemModel {
 
   factory CartItemModel.fromJson(Map<String, dynamic> jsonData) {
     return CartItemModel(
-      id: jsonData['_id'],
+      id: jsonData['_id'].toString(),
       productModel: ProductModel.fromJson(jsonData['product']),
-      quantity: jsonData['quantity'],
-      color: jsonData['color'],
-      size: jsonData['size'],
+      quantity: jsonData['quantity'] ?? 0,
+      color: jsonData['color']?.toString(),
+      size: jsonData['size']?.toString(),
     );
   }
+
 }

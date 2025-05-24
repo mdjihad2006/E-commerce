@@ -1,6 +1,9 @@
 import 'package:bazario/core/network_caller/network_caller.dart';
+import 'package:bazario/core/widgets/show_snackbar.dart';
 import 'package:bazario/data/urls/urls.dart';
+import 'package:bazario/features/cart/data/model/cart_model.dart';
 import 'package:bazario/features/wishlist/data/model/wish_list_model.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
 
@@ -15,13 +18,13 @@ class GetWishListController extends GetxController {
 
   String? _removeFromWishListErrorMessage;
 
-  String? get removeFromCartErrorMessage => _removeFromWishListErrorMessage;
+  String? get removeFromWishListErrorMessage => _removeFromWishListErrorMessage;
 
   List<WishListModel> _wishListItemList = [];
 
-  List<WishListModel> get WishListItemList => _wishListItemList;
+  List<WishListModel> get WishItemList => _wishListItemList;
 
-  bool get getWishListInProgress => _getWishListInProgress;
+  bool get getCartListInProgress => _getWishListInProgress;
 
   bool get removeFromWishListInProgress => _removeFromWishListInProgress;
 
@@ -36,8 +39,7 @@ class GetWishListController extends GetxController {
     if (response.isSuccess) {
       List<WishListModel> list = [];
       for (Map<String, dynamic> json in response.responseData!['data']
-          ['results']) {
-            print(json);
+      ['results']) {
         list.add(WishListModel.fromJson(json));
       }
       _wishListItemList = list;
@@ -62,16 +64,18 @@ class GetWishListController extends GetxController {
     update();
   }
 
-  Future<bool> removeFromCart(String cartId) async {
+  Future<bool> removeFromWIshList( BuildContext context,String wishListId) async {
     bool isSuccess = false;
     _removeFromWishListInProgress = true;
     update();
     final NetworkResponse response =
-        await Get.find<NetworkCaller>().deleteRequest(
-      url: Urls.deleteFromCartListUrl(cartId),
+    await Get.find<NetworkCaller>().deleteRequest(
+      url: Urls.deleteFromWishListUrl(wishListId),
     );
     if (response.isSuccess) {
-      _wishListItemList.removeWhere((e) => e.id == cartId);
+      _wishListItemList.removeWhere((item) => item.id == wishListId);
+      showSnackBarMessage(context,'successfully delete item ');
+      update();
       isSuccess = true;
     } else {
       _removeFromWishListErrorMessage = response.errorMessage;

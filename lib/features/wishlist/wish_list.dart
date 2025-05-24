@@ -1,5 +1,4 @@
 import 'package:bazario/features/wishlist/controller/get_wish_list_controller.dart';
-import 'package:bazario/features/wishlist/data/model/wish_list_model.dart';
 import 'package:bazario/features/wishlist/widgets/wish_list_item.dart';
 
 import 'package:flutter/material.dart';
@@ -22,8 +21,7 @@ class _WishListScreenState extends State<WishListScreen> {
   void initState() {
     super.initState();
     // Ensure controller is available
-    _getWishListController = Get.put(GetWishListController());
-
+    _getWishListController = Get.find<GetWishListController>();
     // Fetch cart data
     _getWishListController.getWishList();
   }
@@ -47,32 +45,24 @@ class _WishListScreenState extends State<WishListScreen> {
         ),
         body: GetBuilder<GetWishListController>(
           builder: (controller) {
-            if (controller.getWishListInProgress) {
+            if (controller.getCartListInProgress) {
               return const CenterCircularProgressIndicator();
             }
 
-            return Column(
-              children: [
-                // Cart Items List
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView.builder(
-                      itemCount: controller.WishListItemList.length,
-                      itemBuilder: (context, index) {
-                        WishListModel wishListItem = controller.WishListItemList[index];
-                        return WishListItem(wishListItem: wishListItem);
-                      },
-                    ),
-                  ),
-                ),
+            if (controller.WishItemList.isEmpty) {
+              return const Center(child: Text('Your wishlist is empty.'));
+            }
 
-                // Total Price Section
-
-              ],
+            return ListView.builder(
+              itemCount: controller.WishItemList.length,
+              itemBuilder: (context, index) {
+                final item = controller.WishItemList[index];
+                return WishListItem(wishListItem: item);
+              },
             );
           },
         ),
+
       ),
     );
   }

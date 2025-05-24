@@ -1,7 +1,6 @@
 import 'package:bazario/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:bazario/features/cart/ui/screens/cart_screens.dart';
 import 'package:bazario/features/categories/controller/category_controller.dart';
-import 'package:bazario/features/categories/controller/get_category_by_slug.dart';
 import 'package:bazario/features/categories/ui/screens/category_list_screen.dart';
 import 'package:bazario/features/common/controllers/mainbottom_navbar_controller.dart';
 import 'package:bazario/features/common/controllers/sliders_controller.dart';
@@ -33,6 +32,7 @@ class _MainBottomNavBarScreenState extends State<MainBottomNavBarScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<HomeSliderController>().getSlider();
       Get.find<CategoryController>().getCategoryList();
+      //GetPopularProductById(categoryId);
       //Get.find<CategoryByIdController>().getCategoryListById('67c29b221edf70fa6198fce5');
     });
   }

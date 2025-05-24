@@ -7,20 +7,21 @@ class WishListModel {
   final String? color;
   final String? size;
 
-  WishListModel(
-      {required this.productModel,
-        required this.id,
-        required this.quantity,
-        required this.color,
-        required this.size});
+  WishListModel({
+    required this.productModel,
+    required this.id,
+    required this.quantity,
+    required this.color,
+    required this.size,
+  });
 
   factory WishListModel.fromJson(Map<String, dynamic> jsonData) {
     return WishListModel(
-      id: jsonData['_id'],
+      id: jsonData['_id'].toString(),
       productModel: ProductModel.fromJson(jsonData['product']),
-      quantity: jsonData['quantity'],
-      color: jsonData['color'],
-      size: jsonData['size'],
+      quantity: jsonData['quantity'] ?? 1,
+      color: jsonData['color']?.toString(),
+      size: jsonData['size']?.toString(),
     );
   }
 }

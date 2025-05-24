@@ -1,10 +1,14 @@
+
 import 'package:bazario/app/app_colors.dart';
 import 'package:bazario/features/common/data/product_model.dart';
 import 'package:bazario/features/home/products/ui/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.productModel});
+  const ProductCard({
+    super.key,
+    required this.productModel,
+  });
 
   final ProductModel productModel;
 
@@ -19,74 +23,82 @@ class ProductCard extends StatelessWidget {
         );
       },
       child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: Colors.white,
         child: SizedBox(
-          width: 150,
+          width: 140,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Product Image
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Container(
-                  height: 120,
-                  width: double.infinity,
-                  color: AppColors.themeColor.withOpacity(0.1),
-                  child: productModel.photos.isNotEmpty
-                      ? Image.network(
-                    productModel.photos.first,
+              Container(
+                height: 120,
+                width: 140,
+                decoration: BoxDecoration(
+                  color: AppColors.themeColor.withOpacity(0.15),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                  image: productModel.photos.isNotEmpty
+                      ? DecorationImage(
+                    image: NetworkImage(productModel.photos.first),
                     fit: BoxFit.cover,
                   )
-                      : const Center(child: Icon(Icons.image_not_supported, size: 40)),
+                      : null,
                 ),
+                child: productModel.photos.isEmpty
+                    ? const Icon(Icons.error_outline_sharp)
+                    : null,
               ),
-
-              // Product Info
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title
                     Text(
                       productModel.title,
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
                       style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 6),
-
-                    // Price & Rating
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '৳${productModel.currentPrice}',
-                          style: TextStyle(
-                            color: AppColors.themeColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
+                          '${productModel.currentPrice}৳',
+                          style: const TextStyle(
+                              color: AppColors.themeColor,
+                              fontWeight: FontWeight.w600),
                         ),
-                        Row(
+                        Wrap(
                           children: [
-                            const Icon(Icons.star, size: 16, color: Colors.orange),
-                            const SizedBox(width: 2),
-                            Text(
-                              "${productModel.rating}",
-                              style: const TextStyle(fontSize: 13),
+                            const Icon(
+                              Icons.star,
+                              size: 18,
+                              color: Colors.orange,
                             ),
+                            Text('${productModel.rating}')
                           ],
                         ),
+                        Card(
+                          color: AppColors.themeColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(2.0),
+                            child: Icon(
+                              Icons.favorite_border,
+                              size: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
                       ],
-                    ),
+                    )
                   ],
                 ),
-              ),
+              )
             ],
           ),
         ),

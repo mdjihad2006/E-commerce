@@ -2,7 +2,9 @@ import 'package:bazario/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:bazario/features/auth/ui/screens/sign_up_screen.dart';
 import 'package:bazario/features/auth/ui/screens/splash_screen.dart';
 import 'package:bazario/features/auth/ui/screens/verify_otp_screen.dart';
+import 'package:bazario/features/cart/ui/screens/payment_screen.dart';
 import 'package:bazario/features/categories/data/category_model/category_modal.dart';
+import 'package:bazario/features/common/data/product_model.dart';
 import 'package:bazario/features/common/ui/screens/main_bottom_navbar_screen.dart';
 import 'package:bazario/features/home/products/ui/screens/create_review.dart';
 import 'package:bazario/features/home/products/ui/screens/product_details_screen.dart';
@@ -28,13 +30,16 @@ class AppRoutes {
     } else if (settings.name == MainBottomNavBarScreen.name) {
       route = const MainBottomNavBarScreen();
     } else if (settings.name == ReviewsScreen.name) {
-      route = const ReviewsScreen();
+      final id = settings.arguments as String;
+      route =  ReviewsScreen(productId: id,);
     } else if (settings.name == CreateReview.name) {
-      route = const CreateReview();
+      final id = settings.arguments as String;
+      route = CreateReview(productId: id,);
     } else if (settings.name == ProductListScreen.name) {
       final category = settings.arguments as CategoryModel;
       route = ProductListScreen(category: category);
-    } else if (settings.name == ProductDetailsScreen.name) {
+    }
+    else if (settings.name == ProductDetailsScreen.name) {
       String productId = settings.arguments as String;
       route = ProductDetailsScreen(productId: productId);
     } else {

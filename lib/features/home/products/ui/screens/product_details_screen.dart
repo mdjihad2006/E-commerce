@@ -8,6 +8,7 @@ import 'package:bazario/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:bazario/features/auth/ui/widgets/snack_bar_message.dart';
 import 'package:bazario/features/cart/ui/screens/cart_screens.dart';
 import 'package:bazario/features/common/controllers/add_to_card-controller.dart';
+import 'package:bazario/features/common/data/product_model.dart';
 import 'package:bazario/features/home/products/controllers/product_details_controller.dart';
 import 'package:bazario/features/home/products/ui/screens/reviews_screen.dart';
 import 'package:bazario/features/home/products/widgets/color_picker.dart';
@@ -109,30 +110,45 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           TextButton(
                                             onPressed: () {
                                               Get.to(
-                                                  ReviewsScreen(),
+                                                ReviewsScreen(productId: controller.product.id),
                                                 transition: Transition.downToUp,
-                                                duration: Duration(seconds: 1)
+                                                duration: const Duration(seconds: 1),
                                               );
                                             },
+
+
+
                                             child: const Text('Reviews'),
                                           ),
-                                          GetBuilder(
-                                              init: _addToWishListController,
-                                              builder: (controller) {
-                                                return Visibility(
-                                                  visible: controller.inProgress == false,
-                                                  replacement: const CenterCircularProgressIndicator(),
-                                                  child: IconButton(onPressed: ()async{
-                                                    final bool isSuccess = await _addToWishListController.addToWishList(_productDetailsController.product.id);
+                                          GetBuilder<AddToWishListController>(
+                                            init: _addToWishListController,
+                                            builder: (controller) {
+                                              final isFav = controller.isFavorite(_productDetailsController.product.id);
+
+                                              return Visibility(
+                                                visible: !controller.inProgress,
+                                                replacement: const CenterCircularProgressIndicator(),
+                                                child: IconButton(
+                                                  onPressed: () async {
+                                                    final isSuccess = await controller.addToWishList(
+                                                        _productDetailsController.product.id);
                                                     if (isSuccess) {
-                                                      showSnackBarMessage(context, 'Add to wishList');
+                                                      showSnackBarMessage(context,
+                                                          isFav ? 'Removed from wishlist' : 'Added to wishlist');
                                                     } else {
                                                       showSnackBarMessage(context,
-                                                          _addToWishListController.errorMessage!, true);
+                                                          controller.errorMessage ?? 'Something went wrong', true);
                                                     }
-                                                  }, icon: Icon(Icons.favorite_border))
-                                                );
-                                              }),
+                                                  },
+                                                  icon: Icon(
+                                                    isFav ? Icons.favorite : Icons.favorite_border,
+                                                    color: isFav ? Colors.red : Colors.grey,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+
                                         ],
                                       ),
                                     ],
@@ -214,19 +230,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Price'),
-              Text(
-                '\$1000',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.themeColor),
+              const Text('Price'),
+              Row(
+                children: [
+                  if (_productDetailsController.product.regularPrice >
+                      _productDetailsController.product.currentPrice)
+                     Text(
+                      '৳${_productDetailsController.product.regularPrice}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  const SizedBox(width: 8),
+                   Text(
+                    '৳${_productDetailsController.product.currentPrice}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.themeColor,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
+
           SizedBox(
             width: 140,
             child: GetBuilder(

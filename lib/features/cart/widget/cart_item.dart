@@ -1,3 +1,5 @@
+// cart_item_card.dart
+
 import 'package:bazario/core/widgets/show_snackbar.dart';
 import 'package:bazario/features/cart/data/model/cart_model.dart';
 import 'package:bazario/features/cart/ui/screens/controller/cart_list_controller.dart';
@@ -25,22 +27,32 @@ class _CartItemCardState extends State<CartItemCard> {
     return Card(
       child: Row(
         children: [
-          SizedBox(
-            height: 100,
-            width: 100,
-            child: Image.network(
-              '',
-              width: 100,
-              height: 100,
-              errorBuilder: (_, __, ___) {
-                return const Icon(Icons.error_outline);
-              },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 80,
+              width: 80,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  widget.cartItem.productModel.photos.isNotEmpty
+                      ? widget.cartItem.productModel.photos[0]
+                      : 'https://via.placeholder.com/100',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) {
+                    return const Icon(Icons.error_outline);
+                  },
+                ),
+              ),
             ),
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -55,7 +67,7 @@ class _CartItemCardState extends State<CartItemCard> {
                             ),
                             Row(
                               children: [
-                                Text('Color: ${widget.cartItem.color}'),
+                                Text('Color: ${widget.cartItem.color}   '),
                                 Text('Size: ${widget.cartItem.size}'),
                               ],
                             ),
@@ -63,23 +75,24 @@ class _CartItemCardState extends State<CartItemCard> {
                         ),
                       ),
                       Visibility(
-                        visible: _deleteInProgress == false,
+                        visible: !_deleteInProgress,
                         replacement: const CircularProgressIndicator(),
                         child: IconButton(
                           onPressed: () async {
-                            _deleteInProgress = true;
-                            setState(() {});
+                            setState(() => _deleteInProgress = true);
                             final bool isSuccess =
-                                await Get.find<CartListController>()
-                                    .removeFromCart(widget.cartItem.id);
-                            _deleteInProgress = false;
-                            setState(() {});
-                            if (isSuccess == false) {
+                            await Get.find<CartListController>()
+                                .removeFromCart(widget.cartItem.id);
+                            setState(() => _deleteInProgress = false);
+
+                            if (!isSuccess) {
                               showSnackBarMessage(
-                                  context,
-                                  Get.find<CartListController>()
-                                      .removeFromCartErrorMessage!,
-                                  true);
+                                context,
+                                Get.find<CartListController>()
+                                    .removeFromCartErrorMessage ??
+                                    'Error removing item',
+                                true,
+                              );
                             }
                           },
                           icon: const Icon(Icons.delete),
@@ -87,6 +100,7 @@ class _CartItemCardState extends State<CartItemCard> {
                       )
                     ],
                   ),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -101,9 +115,9 @@ class _CartItemCardState extends State<CartItemCard> {
                             },
                           ),
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

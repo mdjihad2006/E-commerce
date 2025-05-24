@@ -25,18 +25,28 @@ class _WishItemCardState extends State<WishListItem> {
     return Card(
       child: Row(
         children: [
-          SizedBox(
-            height: 100,
-            width: 100,
-            child: Image.network(
-              '',
-              width: 100,
-              height: 100,
-              errorBuilder: (_, __, ___) {
-                return const Icon(Icons.error_outline);
-              },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 80,
+              width: 80,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  widget.wishListItem.productModel.photos.isNotEmpty
+                      ? widget.wishListItem.productModel.photos[0]
+                      : 'https://via.placeholder.com/100', // fallback
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) {
+                    return const Icon(Icons.error_outline);
+                  },
+                ),
+              ),
             ),
           ),
+
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -55,10 +65,12 @@ class _WishItemCardState extends State<WishListItem> {
                             ),
                             Row(
                               children: [
-                                Text('Color: ${widget.wishListItem.color}'),
+                                Text('Color: ${widget.wishListItem.color}  '),
+                                SizedBox(width: 10),
                                 Text('Size: ${widget.wishListItem.size}'),
                               ],
                             ),
+
                           ],
                         ),
                       ),
@@ -71,14 +83,14 @@ class _WishItemCardState extends State<WishListItem> {
                             setState(() {});
                             final bool isSuccess =
                                 await Get.find<GetWishListController>()
-                                    .removeFromCart(widget.wishListItem.id);
+                                    .removeFromWIshList(context,widget.wishListItem.id);
                             _deleteInProgress = false;
                             setState(() {});
                             if (isSuccess == false) {
                               showSnackBarMessage(
                                   context,
                                   Get.find<GetWishListController>()
-                                      .removeFromCartErrorMessage!,
+                                      .removeFromWishListErrorMessage!,
                                   true);
                             }
                           },

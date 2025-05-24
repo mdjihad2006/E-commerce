@@ -1,4 +1,5 @@
 import 'package:bazario/features/cart/ui/screens/controller/cart_list_controller.dart';
+import 'package:bazario/features/cart/ui/screens/payment_screen.dart';
 import 'package:bazario/features/cart/widget/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,15 +16,11 @@ class CartListScreen extends StatefulWidget {
 }
 
 class _CartListScreenState extends State<CartListScreen> {
-  late final CartListController _cartListController;
+  final CartListController _cartListController = Get.find<CartListController>();
 
   @override
   void initState() {
     super.initState();
-    // Ensure controller is available
-    _cartListController = Get.put(CartListController());
-
-    // Fetch cart data
     _cartListController.getCartList();
   }
 
@@ -50,9 +47,12 @@ class _CartListScreenState extends State<CartListScreen> {
               return const CenterCircularProgressIndicator();
             }
 
+            if (controller.cartItemList.isEmpty) {
+              return const Center(child: Text("Your cart is empty."));
+            }
+
             return Column(
               children: [
-                // Cart Items List
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -65,8 +65,6 @@ class _CartListScreenState extends State<CartListScreen> {
                     ),
                   ),
                 ),
-
-                // Total Price Section
                 _buildTotalPriceSection(),
               ],
             );
@@ -77,47 +75,48 @@ class _CartListScreenState extends State<CartListScreen> {
   }
 
   Widget _buildTotalPriceSection() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.themeColor.withOpacity(0.1),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Total Text
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return GetBuilder<CartListController>(
+      builder: (controller) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.themeColor.withOpacity(0.1),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Total Price'),
-              Text(
-                '৳${_cartListController.totalPrice}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.themeColor,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Total Price'),
+                  Text(
+                    '৳${controller.totalPrice}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.themeColor,
+                    ),
+                  ),
+                ],
               ),
+              SizedBox(
+                width: 140,
+                child: ElevatedButton(
+                  onPressed: () {
+                    PaymentMethodGetwayIntegration(context,controller.totalPrice.toDouble());
+                   //Get.to(PaymentScreen(paymentAmount: controller.totalPrice.toDouble())); // Handle checkout
+                  },
+                  child: const Text('Checkout'),
+                ),
+              )
             ],
           ),
-
-          // Checkout Button
-          SizedBox(
-            width: 140,
-            child: ElevatedButton(
-              onPressed: () {
-                // Navigate to payment screen if implemented
-                // Navigator.pushNamed(context, PaymentScreen.name, arguments: _cartListController.totalPrice);
-              },
-              child: const Text('Checkout'),
-            ),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }

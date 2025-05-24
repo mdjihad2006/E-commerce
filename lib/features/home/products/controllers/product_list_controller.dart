@@ -71,6 +71,133 @@ class ProductListController extends GetxController {
 
     return isSuccess;
   }
+  Future<bool> getPopularProducts() async {
+    if (_totalPage != null && _currentPage > _totalPage!) {
+      return true;
+    }
+
+    bool isSuccess = false;
+    _currentPage++;
+    if (!_isInitialLoading) {
+      _isLoading = true;
+    }
+    update();
+    final NetworkResponse response = await Get.find<NetworkCaller>()
+        .getRequest(url: Urls.getPopularProductUrl, queryParams: {
+      'count': _perPageDataCount,
+      'page': _currentPage,
+      'category':'67c35af85e8a445235de197b'
+    });
+    if (response.isSuccess) {
+      List<ProductModel> list = [];
+      for (Map<String, dynamic> data in response.responseData!['data']
+      ['results']) {
+        list.add(ProductModel.fromJson(data));
+      }
+      _productList.addAll(list);
+      _totalPage = response.responseData!['data']['last_page'];
+
+      _errorMessage = null;
+      isSuccess = true;
+    } else {
+      _errorMessage = response.errorMessage;
+    }
+
+    if (!_isInitialLoading) {
+      _isLoading = false;
+    } else {
+      _isInitialLoading = false;
+    }
+
+    update();
+
+    return isSuccess;
+  }
+  Future<bool> getSpecialProducts() async {
+    if (_totalPage != null && _currentPage > _totalPage!) {
+      return true;
+    }
+
+    bool isSuccess = false;
+    _currentPage++;
+    if (!_isInitialLoading) {
+      _isLoading = true;
+    }
+    update();
+    final NetworkResponse response = await Get.find<NetworkCaller>()
+        .getRequest(url: Urls.getSpecialProductUrl, queryParams: {
+      'count': _perPageDataCount,
+      'page': _currentPage,
+      'category':'67c35b395e8a445235de197e'
+    });
+    if (response.isSuccess) {
+      List<ProductModel> list = [];
+      for (Map<String, dynamic> data in response.responseData!['data']
+      ['results']) {
+        list.add(ProductModel.fromJson(data));
+      }
+      _productList.addAll(list);
+      _totalPage = response.responseData!['data']['last_page'];
+
+      _errorMessage = null;
+      isSuccess = true;
+    } else {
+      _errorMessage = response.errorMessage;
+    }
+
+    if (!_isInitialLoading) {
+      _isLoading = false;
+    } else {
+      _isInitialLoading = false;
+    }
+
+    update();
+
+    return isSuccess;
+  }
+  Future<bool> getNewProducts() async {
+    if (_totalPage != null && _currentPage > _totalPage!) {
+      return true;
+    }
+
+    bool isSuccess = false;
+    _currentPage++;
+    if (!_isInitialLoading) {
+      _isLoading = true;
+    }
+    update();
+    final NetworkResponse response = await Get.find<NetworkCaller>()
+        .getRequest(url: Urls.getNewProductUrl, queryParams: {
+      'count': _perPageDataCount,
+      'page': _currentPage,
+      'category':'67cd33432e43d538695ea4bc'
+    });
+    if (response.isSuccess) {
+      List<ProductModel> list = [];
+      for (Map<String, dynamic> data in response.responseData!['data']
+      ['results']) {
+        list.add(ProductModel.fromJson(data));
+      }
+      _productList.addAll(list);
+      _totalPage = response.responseData!['data']['last_page'];
+
+      _errorMessage = null;
+      isSuccess = true;
+    } else {
+      _errorMessage = response.errorMessage;
+    }
+
+    if (!_isInitialLoading) {
+      _isLoading = false;
+    } else {
+      _isInitialLoading = false;
+    }
+
+    update();
+
+    return isSuccess;
+  }
+
 
   Future<bool> refreshList(String categoryId) {
     _currentPage = 0;

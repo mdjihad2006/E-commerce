@@ -95,6 +95,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     return null;
                   },
                 ),
+                SizedBox(height: 10,),
+                Text('Please fill with your custom OTP: 1234'),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _onTapVerifyOtpButton,

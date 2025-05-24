@@ -1,10 +1,11 @@
 import 'package:bazario/features/cart/ui/screens/controller/cart_list_controller.dart';
-import 'package:bazario/features/categories/controller/get_category_by_slug.dart';
+import 'package:bazario/features/home/products/controllers/create_review_controller.dart';
+import 'package:bazario/features/home/products/controllers/get_revew_controller.dart';
+import 'package:bazario/features/home/products/controllers/product_list_controller.dart';
 import 'package:bazario/features/wishlist/controller/add_to_wish_list.dart';
 import 'package:bazario/features/wishlist/controller/get_wish_list_controller.dart';
 import 'package:get/get.dart';
 
-// Your controller imports
 import 'package:bazario/core/network_caller/network_caller.dart';
 import 'package:bazario/features/auth/controller/auth_controller.dart';
 import 'package:bazario/features/auth/ui/controllers/sign_in_controller.dart';
@@ -23,10 +24,12 @@ class ControllerBinder extends Bindings {
     Get.put(SignUpController());
     Get.put(SignInController());
     Get.put(AuthController());
+    Get.put(ReviewController());
     Get.put(CategoryController());
-    Get.put(CategoryByIdController());
+    Get.put(CreateReviewController());
     Get.put(CartListController());
     Get.put(GetWishListController());
+    Get.put(ProductListController());
     Get.put(AddToWishListController());
 
     // Only one of these! Choose either eager or lazy:
