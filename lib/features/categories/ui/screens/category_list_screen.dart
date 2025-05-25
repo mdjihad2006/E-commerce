@@ -9,8 +9,6 @@ import 'package:get/get.dart';
 class CategoryListScreen extends StatefulWidget {
   const CategoryListScreen({super.key});
 
-  static const String name = '/category-screen';
-
   @override
   State<CategoryListScreen> createState() => _CategoryListScreenState();
 }

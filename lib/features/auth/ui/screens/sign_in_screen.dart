@@ -111,7 +111,6 @@ class _SignInScreenState extends State<SignInScreen> {
     } else {
       showSnackBarMessage(context, _signInController.errorMessage!, true);
     }
-    // TODO: validate the form
 
   }
 

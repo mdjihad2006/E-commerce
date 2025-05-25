@@ -1,43 +1,47 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:bazario/core/widgets/center_circular_progress_indicator.dart';
 import 'package:bazario/features/categories/data/category_model/category_modal.dart';
 import 'package:bazario/features/common/ui/widets/product_cart.dart';
 import 'package:bazario/features/home/products/controllers/product_list_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProductListScreen extends StatefulWidget {
-
-  static final String name = '/product-list';
-
   const ProductListScreen({super.key, required this.category});
+
   final CategoryModel category;
+
+  static const String name = '/products';
+
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  late final ProductListController _productListController;
+  // Remove direct instantiation
+  // final ProductListController _productListController = ProductListController();
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    // Initialize the controller using Get.put to allow GetBuilder to work
-    _productListController = Get.put(ProductListController());
-    _productListController.getProductListByCategory(widget.category.id);
+    // Ensure controller is registered with GetX
+    Get.put(ProductListController());
+    Get.find<ProductListController>().getProductListByCategory(widget.category.id);
     _scrollController.addListener(_loadData);
   }
 
   void _loadData() {
     if (_scrollController.position.extentAfter < 300) {
-      _productListController.getProductListByCategory(widget.category.id);
+      Get.find<ProductListController>().getProductListByCategory(widget.category.id);
     }
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_loadData);
     _scrollController.dispose();
+    // Optionally remove the controller if not needed elsewhere
+    Get.delete<ProductListController>();
     super.dispose();
   }
 

@@ -50,23 +50,19 @@ class AuthController extends GetxController {
   }
 
   Future<void> clearUserData() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.remove(_tokenKey);
-    await sharedPreferences.remove(_userDataKey);
-    token = null;
-    user = null;
-    print('Cleared token'); // Debug log
-    update();
-
-    // Delay navigation to ensure UI is ready
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      try {
-        Get.offAllNamed('/login');
-      } catch (e) {
-        print('Navigation error: $e');
-        Get.toNamed('/login'); // Fallback navigation
-      }
-    });
+    try {
+      final sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.remove(_tokenKey);
+      await sharedPreferences.remove(_userDataKey);
+      token = null;
+      user = null;
+      print('Cleared token');
+      // Avoid calling update() unless necessary for UI
+      // update(); // Comment out or remove unless UI needs to refresh
+    } catch (e) {
+      print('Error clearing user data: $e');
+      throw Exception('Failed to clear user data: $e');
+    }
   }
 
   bool isValidUser() {

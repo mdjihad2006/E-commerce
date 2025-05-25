@@ -292,19 +292,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         final bool isSuccess = await _addToCartController
                             .addToCart(_productDetailsController.product.id);
                         if (isSuccess) {
-                          GestureDetector(
-                            child: Card(
-                              child: Row(
-                                children: [
-                                  Text('add to cart successfully'),
-                                  TextButton(onPressed: (){
-                                    Get.to(CartListScreen);
-                                  }, child: Text('go to cart'))
-
-                                ],
-                              ),
-                            ),
-                          );
+                          showSnackBarMessage(context, 'Successfully added');
                         } else {
                           showSnackBarMessage(context,
                               _addToCartController.errorMessage!, true);

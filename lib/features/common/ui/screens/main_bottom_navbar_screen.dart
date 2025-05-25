@@ -4,13 +4,15 @@ import 'package:bazario/features/categories/controller/category_controller.dart'
 import 'package:bazario/features/categories/ui/screens/category_list_screen.dart';
 import 'package:bazario/features/common/controllers/mainbottom_navbar_controller.dart';
 import 'package:bazario/features/common/controllers/sliders_controller.dart';
+import 'package:bazario/features/common/data/product_model.dart';
 import 'package:bazario/features/home/ui/screen/home_screen.dart';
 import 'package:bazario/features/wishlist/wish_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainBottomNavBarScreen extends StatefulWidget {
-  const MainBottomNavBarScreen({super.key});
+  const MainBottomNavBarScreen({super.key,});
+
 
   static const String name = '/main-nav-bar-screen';
 
@@ -19,9 +21,11 @@ class MainBottomNavBarScreen extends StatefulWidget {
 }
 
 class _MainBottomNavBarScreenState extends State<MainBottomNavBarScreen> {
+  late final ProductModel productModel;
+
   final List<Widget> _screens = [
     const HomeScreen(),
-    const CategoryListScreen(),
+    CategoryListScreen(),
     CartListScreen(),
     const WishListScreen(),
   ];

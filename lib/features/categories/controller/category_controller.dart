@@ -4,6 +4,7 @@ import 'package:bazario/data/urls/urls.dart';
 import 'package:bazario/features/categories/data/category_model/category_modal.dart';
 import 'package:get/get.dart';
 
+
 class CategoryController extends GetxController {
   final int _perPageDataCount = 30;
 

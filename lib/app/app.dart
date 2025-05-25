@@ -1,72 +1,74 @@
 import 'package:bazario/app/app_colors.dart';
-import 'package:bazario/app/app_routs.dart' show AppRoutes;
-import 'package:bazario/app/controller_binder.dart';
 import 'package:bazario/l10n/app_localizations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
+
+import 'app_routs.dart';
+import 'controller_binder.dart';
 
 class Bazario extends StatefulWidget {
   const Bazario({super.key});
 
   @override
-  State<Bazario> createState() => _BazarioState();
+  State<Bazario> createState() => _CraftyBayState();
 }
 
-class _BazarioState extends State<Bazario> {
-
-  static GlobalKey<NavigatorState> navigateKey = GlobalKey<NavigatorState>();
+class _CraftyBayState extends State<Bazario> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: ControllerBinder(),
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRoutes.onGenerateRoute,
       theme: ThemeData(
-        inputDecorationTheme: InputDecorationTheme(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.themeColor),
+          colorSchemeSeed: AppColors.themeColor,
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: const TextTheme(
+              titleLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.w600)),
+          inputDecorationTheme: const InputDecorationTheme(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.themeColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.themeColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.themeColor),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              ),
+              hintStyle: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey
+              )
           ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.themeColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.themeColor),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          hintStyle: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            fixedSize: const Size.fromWidth(double.maxFinite),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                fixedSize: const Size.fromWidth(double.maxFinite),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)
+                ),
+                foregroundColor: Colors.white,
+                backgroundColor: AppColors.themeColor
             ),
-            foregroundColor: Colors.white,
-            backgroundColor: AppColors.themeColor,
           ),
-        ),
-        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
-
-        textTheme: TextTheme(
-          titleLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        colorSchemeSeed: AppColors.themeColor,
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.white
+          )
       ),
-      navigatorKey: navigateKey,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: Locale('en'),
-      supportedLocales: [Locale('en'), Locale('bn')],
-      initialRoute: '/',
-      onGenerateRoute: AppRoutes.onGenerateRoute,
+      locale: const Locale('en'),
+      supportedLocales: const [Locale('en'), Locale('bn')],
+      initialBinding: ControllerBinder(),
     );
   }
 }

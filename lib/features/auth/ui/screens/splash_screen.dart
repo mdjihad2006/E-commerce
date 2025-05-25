@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (mounted) {
       if(Get.find<AuthController>().isValidUser()){
-        Get.to(MainBottomNavBarScreen(),transition: Transition.leftToRight,duration: Duration(seconds: 1));
+        Get.offAll(MainBottomNavBarScreen(),transition: Transition.leftToRight,duration: Duration(seconds: 1));
       }
       else{
         Navigator.pushReplacementNamed(context, SignInScreen.name);

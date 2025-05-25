@@ -1,7 +1,10 @@
 import 'package:bazario/features/cart/ui/screens/controller/cart_list_controller.dart';
 import 'package:bazario/features/home/products/controllers/create_review_controller.dart';
 import 'package:bazario/features/home/products/controllers/get_revew_controller.dart';
+import 'package:bazario/features/home/products/controllers/new_category_controller.dart';
+import 'package:bazario/features/home/products/controllers/popularProductListController.dart';
 import 'package:bazario/features/home/products/controllers/product_list_controller.dart';
+import 'package:bazario/features/home/products/controllers/special_category_controller.dart';
 import 'package:bazario/features/wishlist/controller/add_to_wish_list.dart';
 import 'package:bazario/features/wishlist/controller/get_wish_list_controller.dart';
 import 'package:get/get.dart';
@@ -30,6 +33,9 @@ class ControllerBinder extends Bindings {
     Get.put(CartListController());
     Get.put(GetWishListController());
     Get.put(ProductListController());
+    Get.put(PopularProductListController());
+    Get.put(SpecialProductListController());
+    Get.put(NewProductListController());
     Get.put(AddToWishListController());
 
     // Only one of these! Choose either eager or lazy:

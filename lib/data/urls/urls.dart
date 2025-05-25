@@ -10,9 +10,9 @@ class Urls {
 
   static const String getCategoryUrl = "$_baseUrl/categories";
   static const String getProductUrl = "$_baseUrl/products";
-  static const String getPopularProductUrl = "$_baseUrl/products";
-  static const String getSpecialProductUrl = "$_baseUrl/products";
-  static const String getNewProductUrl = "$_baseUrl/products";
+  //static const String getPopularProductUrl = "$_baseUrl/products";
+  //static const String getSpecialProductUrl = "$_baseUrl/products";
+  //static const String getNewProductUrl = "$_baseUrl/products";
   //static String getProductById(String id) => "$_baseUrl/products/id/$id";
   //static String getPopularProduct = "$_baseUrl/products";
 
