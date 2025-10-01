@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # bazario
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# E-commerce
+A new e-commerce flutter project
+>>>>>>> 88dff51ec442ccad02ff246e78458aedd1268f59
